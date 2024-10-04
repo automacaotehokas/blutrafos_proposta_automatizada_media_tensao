@@ -36,7 +36,12 @@ def gerar_documento():
         '{{LOCAL}}': st.session_state['dados_iniciais'].get('local', '')
     }
 
+    # Garantir que os itens configurados estejam no st.session_state
     itens_configurados = st.session_state.get('itens_configurados', [])
+
+    if not itens_configurados:
+        st.error("Por favor, preencha todos os itens antes de gerar o documento.")
+        return None, None
 
     # Verifica se os dados necessários estão preenchidos
     if itens_configurados:
@@ -60,3 +65,80 @@ def gerar_documento():
     else:
         st.error("Por favor, preencha todos os itens antes de gerar o documento.")
         return None, None
+
+# Função para verificar se os dados estão completos
+def verificar_dados_completos():
+    dados_iniciais = st.session_state.get('dados_iniciais', {})
+    itens_configurados = st.session_state.get('itens_configurados', [])
+
+    # Lista de campos obrigatórios em dados_iniciais
+    campos_obrigatorios = ['cliente', 'nomeCliente', 'fone', 'email', 'bt', 'obra', 'dia', 'mes', 'ano', 'rev', 'local']
+    
+    # Verifica se algum campo obrigatório está vazio
+    for campo in campos_obrigatorios:
+        if not dados_iniciais.get(campo):
+            return False
+
+    # Verifica se os itens estão configurados
+    if not itens_configurados:
+        return False
+
+    return True  # Tudo preenchido corretamente
+
+# Página para gerar o documento
+def pagina_gerar_documento():
+    st.title("Resumo")
+    st.markdown("---")
+
+    # Verifica se os dados da Pag1 estão preenchidos
+    if 'dados_iniciais' not in st.session_state:
+        st.error("Por favor, preencha os dados na Pag1 antes de gerar o documento.")
+        return  # Saia da função se os dados não estiverem presentes
+
+    # Resumo da Pag1 como uma ficha
+    st.subheader("Dados Iniciais")
+    st.write("**Cliente:**", st.session_state['dados_iniciais'].get('cliente', ''))
+    st.write("**Nome do Cliente:**", st.session_state['dados_iniciais'].get('nomeCliente', ''))
+    st.write("**Telefone:**", st.session_state['dados_iniciais'].get('fone', ''))
+    st.write("**Email:**", st.session_state['dados_iniciais'].get('email', ''))
+    st.write("**BT:**", st.session_state['dados_iniciais'].get('bt', ''))
+    st.write("**Obra:**", st.session_state['dados_iniciais'].get('obra', ''))
+    st.write("**Data:**", f"{st.session_state['dados_iniciais'].get('dia', '')}/{st.session_state['dados_iniciais'].get('mes', '')}/{st.session_state['dados_iniciais'].get('ano', '')}")
+    st.write("**Revisão:**", st.session_state['dados_iniciais'].get('rev', ''))
+    st.write("**Local:**", st.session_state['dados_iniciais'].get('local', ''))
+
+    st.markdown("---")
+
+    # Mostrando as informações configuradas na Pag2
+    st.subheader("Itens Configurados")
+    
+    # Referenciando o resumo_df armazenado na Pag2
+    resumo_df = st.session_state.get('resumo_df', None)
+    if resumo_df is not None:
+        st.table(resumo_df)  # Exibe a tabela de itens configurados
+    else:
+        st.write("Nenhum item configurado.")
+
+    # Verificar se todos os dados obrigatórios estão preenchidos
+    dados_completos = verificar_dados_completos()
+    st.write("O botão abaixo estará disponível após o preenchimento de todos os dados anteriores")
+
+    # Gerar e baixar o documento em um único botão
+    if st.button('Confirmar', disabled=not dados_completos):
+        if dados_completos:
+            buffer, output_filename = gerar_documento()
+            if buffer:
+                # Oferecer o download diretamente após a geração
+                st.download_button(
+                    label="Clique para Baixar o Documento",
+                    data=buffer,
+                    file_name=output_filename,
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                )
+            else:
+                st.error("Erro ao gerar o documento.")
+        else:
+            st.error("Por favor, preencha todos os campos obrigatórios antes de gerar o documento.")
+
+# Chama a função da Pag3
+pagina_gerar_documento()
