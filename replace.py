@@ -218,8 +218,8 @@ def create_custom_table_escopo(doc, itens_configurados):
             tensao_secundaria_float = float(tensao_secundaria_str)
         
             # Realiza o cálculo da tensão secundária dividida por 3 e pela raiz quadrada da tensão secundária
-            raiz_tensao_secundaria = math.sqrt(tensao_secundaria_float)
-            tensao_calculada = tensao_secundaria_float / (3 * raiz_tensao_secundaria)
+            raiz_tensao_secundaria = math.sqrt(3)
+            tensao_calculada = tensao_secundaria_float / raiz_tensao_secundaria
             tensao_calculada_arredondada = round(tensao_calculada, 2)  # Arredonda para 2 casas decimais
         
             # Formata o texto com os dois valores
