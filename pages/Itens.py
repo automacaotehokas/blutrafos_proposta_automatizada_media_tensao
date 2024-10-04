@@ -155,8 +155,19 @@ for item in range(len(st.session_state['itens_configurados'])):
         preco_unitario = 0.0  # Resetar o preço unitário caso a descrição não seja escolhida
 
     # Campos de entrada
-    tensao_primaria = st.text_input(f'Tensão Primária do Item {item + 1}:', key=f'tensao_primaria_{item}', value=st.session_state['itens_configurados'][item]['Tensão Primária'],placeholder="Digite apenas o valor sem unidade")
-    tensao_secundaria = st.text_input(f'Tensão Secundária do Item {item + 1}:', key=f'tensao_secundaria_{item}', value=st.session_state['itens_configurados'][item]['Tensão Secundária'],placeholder="Digite apenas o valor sem unidade")
+    tensao_primaria = st.number_input(f'Tensão Primária do Item {item + 1}:', 
+                                  key=f'tensao_primaria_{item}', 
+                                  value=float(st.session_state['itens_configurados'][item]['Tensão Primária']), 
+                                  min_value=0.0,  # Valor mínimo como zero, ou você pode definir outro valor
+                                  step=1.0, 
+                                  format="%.2f")  # Aceita números com 2 casas decimais
+
+    tensao_secundaria = st.number_input(f'Tensão Secundária do Item {item + 1}:', 
+                                    key=f'tensao_secundaria_{item}', 
+                                    value=float(st.session_state['itens_configurados'][item]['Tensão Secundária']), 
+                                    min_value=0.0, 
+                                    step=1.0, 
+                                    format="%.2f")
     derivacoes = st.text_input(f'Derivações do Item {item + 1}:', key=f'derivacoes_{item}', value=st.session_state['itens_configurados'][item]['Derivações'],placeholder="Digite apenas o valor sem unidade")
 
     # Salvar valores no session_state
