@@ -7,16 +7,23 @@ from sharepoint_code import SharePoint  # Classe SharePoint para baixar o templa
 
 st.set_page_config(layout="wide")
 
+# Função para baixar o template uma vez e reutilizá-lo
+def get_template_file():
+    # Verifica se o template já foi baixado
+    local_template_path = "/tmp/Template_Proposta_Comercial.docx"
+    
+    if not os.path.exists(local_template_path):
+        # Se o template não foi baixado, faz o download do SharePoint
+        sp = SharePoint()
+        template_name = 'Template_Proposta_Comercial.docx'
+        local_template_path = sp.download_file(template_name)
+    
+    return local_template_path
+
 # Função para gerar o documento e retornar o conteúdo em memória
 def gerar_documento():
-    # Instância da classe SharePoint
-    sp = SharePoint()
-
-    # Nome do arquivo template no SharePoint
-    template_name = 'Template_Proposta_Comercial.docx'
-
-    # 1. Fazer o download do template do SharePoint
-    template_path = sp.download_file(template_name)  # Agora baixamos o template e salvamos localmente em "/tmp"
+    # Pegar o template (baixar se ainda não baixado)
+    template_path = get_template_file()
 
     # Nome do arquivo de saída
     output_filename = f"Proposta Blutrafos nº BT {st.session_state['dados_iniciais']['bt']}-Rev{st.session_state['dados_iniciais']['rev']}.docx"
