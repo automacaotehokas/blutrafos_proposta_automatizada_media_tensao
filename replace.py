@@ -208,7 +208,7 @@ def create_custom_table_escopo(doc, itens_configurados):
         eficiencia = determinar_eficiencia(item['Perdas'])
 
         # Formatar a potência
-        potencia_formatada = f"{item.get('Potência', 'N/A'):.0f}kVA" if isinstance(item.get('Potência'), (int, float)) else item.get('Potência', 'N/A')
+        potencia_formatada = f"{item.get('Potência', 'N/A'):.0f} kVA" if isinstance(item.get('Potência'), (int, float)) else item.get('Potência', 'N/A')
 
         # Pegando o valor da Tensão Secundária como texto e tentando convertê-lo para float
         tensao_secundaria_str = item.get('Tensão Secundária', '0')
@@ -237,7 +237,7 @@ def create_custom_table_escopo(doc, itens_configurados):
         escopo_text = (
             f"Transformador Trifásico **isolado a seco**, Classe de tensão **{classe_tensao}/1,1kV**, "
             f"Marca e Fabricação Blutrafos, Potência: **{potencia_formatada}**, Fator: **K={item.get('Fator K', 'N/A')}**, "
-            f"Tensão **Primária**: **{item.get('Tensão Primária', 'N/A')}V**, Derivações: **{item.get('Derivações', 'N/A')}kV**, "
+            f"Tensão **Primária**: **{item.get('Tensão Primária', 'N/A')}kV**, Derivações: **{item.get('Derivações', 'N/A')}kV**, "
             f"Tensão **Secundária**: **{tensao_secundaria_texto}**, Grupo de Ligação: **Dyn-1**, "
             f"Frequência: **60Hz**, NBI: **95kV**, Classe de Temperatura: F (155ºC), "
             f"Elevação Temperatura média dos enrolamentos: **100ºC**, Materiais dos enrolamentos: **Alumínio**, "
