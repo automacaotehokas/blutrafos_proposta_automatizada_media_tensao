@@ -2,6 +2,7 @@ from docx.shared import Pt, RGBColor, Cm
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH 
 
 # Função para definir a altura de uma linha
 def set_row_height(row, height_cm):
@@ -234,9 +235,7 @@ def create_custom_table_escopo(doc, itens_configurados):
             run.font.size = Pt(10)
 
         # Aplicar formatação no parágrafo
-        apply_paragraph_formatting(escopo_paragraph, alignment='justify')
-
-        # Adicionar espaçamento após o parágrafo (2pt)
+        escopo_paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY  # Alinhamento justificado
         paragraph_format = escopo_paragraph.paragraph_format
         paragraph_format.space_after = Pt(2)
 
