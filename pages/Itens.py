@@ -98,7 +98,7 @@ while len(st.session_state['itens_configurados']) < quantidade_itens:
         'Potência': None,
         'Tensão Primária': None,
         'Tensão Secundária': None,
-        'Derivações': None,
+        'Derivações': "13,8/13,2/12,6/12,0/11,4",
         'Fator K': 1,
         'IP': '00',
         'Perdas': None,
