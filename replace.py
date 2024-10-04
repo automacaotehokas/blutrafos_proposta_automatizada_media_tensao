@@ -208,15 +208,26 @@ def create_custom_table_escopo(doc, itens_configurados):
 
         # Formatar a potência
         potencia_formatada = f"{item.get('Potência', 'N/A'):.0f}kVA" if isinstance(item.get('Potência'), (int, float)) else item.get('Potência', 'N/A')
-        # Verificar se a tensão secundária é numérica para realizar o cálculo
-        if isinstance(tensao_secundaria, (int, float)):
-            # Cálculo da tensão secundária dividida por 3 e pela raiz quadrada da tensão secundária
-            raiz_tensao_secundaria = math.sqrt(tensao_secundaria)
-            tensao_calculada = tensao_secundaria / (3 * raiz_tensao_secundaria)
-            tensao_calculada_arredondada = round(tensao_calculada, 2)  # Arredonda para 2 casas decimais
-            tensao_secundaria_texto = f"{tensao_secundaria}V / {tensao_calculada_arredondada}V"
-        else:
-            tensao_secundaria_texto = f"{tensao_secundaria}V"
+# Pegando o valor da Tensão Secundária como texto e tentando convertê-lo para float
+        tensao_secundaria = st.session_state['itens_configurados'][item].get('Tensão Secundária', '0')
+
+        tensao_secundaria = st.session_state['itens_configurados'][item].get('Tensão Secundária', '0')
+
+    try:
+    # Tenta converter a tensão secundária para float
+        tensao_secundaria_float = float(tensao_secundaria)
+    
+    # Realiza o cálculo da tensão secundária dividida por 3 e pela raiz quadrada da tensão secundária
+        raiz_tensao_secundaria = math.sqrt(tensao_secundaria_float)
+        tensao_calculada = tensao_secundaria_float / (3 * raiz_tensao_secundaria)
+        tensao_calculada_arredondada = round(tensao_calculada, 2)  # Arredonda para 2 casas decimais
+    
+    # Formata o texto com os dois valores
+        tensao_secundaria_texto = f"{tensao_secundaria_float}V / {tensao_calculada_arredondada}V"
+    
+    except ValueError:
+    # Se a conversão falhar, exibe apenas o valor original como texto e um aviso
+        tensao_secundaria_texto = f"{tensao_secundaria}V (valor inválido para cálculo)"
 
         # Texto de escopo com negrito em palavras selecionadas
         escopo_text = (
