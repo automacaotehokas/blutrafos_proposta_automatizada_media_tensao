@@ -238,7 +238,7 @@ resumo_df = pd.DataFrame(st.session_state['itens_configurados'])
 
 # Ajustar a exibição para mostrar Potência Formatada e Tensão Primária / Secundária
 resumo_df['Potência'] = resumo_df['Potência'].apply(lambda x: f"{x:,.0f} kVA" if x is not None else "")
-resumo_df['Tensões'] = resumo_df['Tensão Primária'] + " / " + resumo_df['Tensão Secundária'] + " V"
+resumo_df['Tensões'] = resumo_df['Tensão Primária'] + "kV" + " / " + resumo_df['Tensão Secundária'] + " V"
 resumo_df = resumo_df[['Item', 'Quantidade', 'Potência', 'Tensões', 'Perdas', 'Fator K', 'IP', 'Preço Unitário', 'Preço Total']]
 
 # Exibir a tabela ajustada

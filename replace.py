@@ -102,7 +102,7 @@ def create_custom_table(doc, itens_configurados, observacao):
         row.cells[1].text = str(item["Quantidade"])  # Quantidade
         row.cells[2].text = f"{item['Potência']} kVA" if item["Potência"] % 1 != 0 else f"{int(item['Potência'])} kVA"  # Potência
         row.cells[3].text = str(item["Fator K"])  # Fator K
-        row.cells[4].text = f"{item['Tensão Primária'].replace('kV', '').strip()}/{item['Tensão Secundária'].replace('kV', '').strip()} kV"  # Tensão
+        row.cells[4].text = f"{item['Tensão Primária']}/{item['Tensão Secundária']} V"  # Tensão
         row.cells[5].text = str(item["IP"])  # IP
         row.cells[6].text = str(item["Perdas"])  # Norma (antiga Perda)
         row.cells[7].text = f"{item['Preço Unitário']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # Preço unitário
