@@ -247,6 +247,8 @@ st.table(resumo_df)
 # Armazenar o resumo_df no session_state para ser acessado na Pag3
 st.session_state['resumo_df'] = resumo_df  # Isso garante que o resumo_df seja acessível na Pag3
 
+st.markdown("---")
+
 # Soma do preço total
 total_fornecimento = resumo_df['Preço Total'].sum()
 st.subheader(f"Valor Total do Fornecimento: R$ {total_fornecimento:,.2f}")
