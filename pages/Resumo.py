@@ -106,7 +106,7 @@ def pagina_gerar_documento():
 
     # Verificar se todos os dados obrigatórios estão preenchidos
     dados_completos = verificar_dados_completos()
-
+    st.write("O botão abaixo estará disponivel após o preenchimento de todos os dados anteriores")
     # Gerar e baixar o documento em um único botão
     if st.button('Confirmar', disabled=not dados_completos):
         if dados_completos:
