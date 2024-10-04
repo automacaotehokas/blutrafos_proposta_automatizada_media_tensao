@@ -19,4 +19,5 @@ tempo e garantindo precisão nas informações fornecidas aos nossos clientes.
 Nosso objetivo é proporcionar uma solução eficiente, rápida e segura, integrando todas as etapas do 
 processo de criação de propostas em um único lugar, com a capacidade de armazenar e gerenciar dados de 
 forma centralizada através da integração com o SharePoint.
-""")
+""" ,
+    unsafe_allow_html=True)
