@@ -104,7 +104,7 @@ def create_custom_table(doc, itens_configurados, observacao):
         row.cells[1].text = str(item["Quantidade"])  # Quantidade
         row.cells[2].text = f"{item['Potência']} kVA" if item["Potência"] % 1 != 0 else f"{int(item['Potência'])} kVA"  # Potência
         row.cells[3].text = str(item["Fator K"])  # Fator K
-        row.cells[4].text = f"{item['Tensão Primária']}/{item['Tensão Secundária']} V"  # Tensão
+        row.cells[4].text = f"{item['Tensão Primária']}kV /{item['Tensão Secundária']} V"  # Tensão
         row.cells[5].text = str(item["IP"])  # IP
         row.cells[6].text = str(item["Perdas"])  # Norma (antiga Perda)
         row.cells[7].text = f"{item['Preço Unitário']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")  # Preço unitário
@@ -218,12 +218,16 @@ def create_custom_table_escopo(doc, itens_configurados):
             tensao_secundaria_float = float(tensao_secundaria_str)
         
             # Realiza o cálculo da tensão secundária dividida por 3 e pela raiz quadrada da tensão secundária
+            # Cálculo correto da tensão secundária a partir da tensão de linha (usando sqrt(3))
             raiz_tensao_secundaria = math.sqrt(3)
             tensao_calculada = tensao_secundaria_float / raiz_tensao_secundaria
-            tensao_calculada_arredondada = round(tensao_calculada, 2)  # Arredonda para 2 casas decimais
-        
-            # Formata o texto com os dois valores
-            tensao_secundaria_texto = f"{tensao_secundaria_float}V / {tensao_calculada_arredondada}V"
+            tensao_calculada_inteira = int(round(tensao_calculada))  # Arredonda para o inteiro mais próximo
+
+            # Também arredondando o valor de tensao_secundaria_float para inteiro
+            tensao_secundaria_inteira = int(round(tensao_secundaria_float))
+
+            # Formata o texto com os dois valores como inteiros
+            tensao_secundaria_texto = f"{tensao_secundaria_inteira}V/{tensao_calculada_inteira}V"
         
         except ValueError:
             # Se a conversão falhar, exibe apenas o valor original como texto e um aviso
