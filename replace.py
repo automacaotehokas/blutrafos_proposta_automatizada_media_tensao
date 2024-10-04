@@ -159,7 +159,6 @@ def create_custom_table(doc, itens_configurados, observacao):
 
     return table
 
-# Função para criar a tabela do Escopo de Fornecimento
 def create_custom_table_escopo(doc, itens_configurados):
     table = doc.add_table(rows=len(itens_configurados) + 1, cols=2)  # Tabela com 2 colunas (Item e Escopo do Fornecimento)
 
@@ -234,10 +233,18 @@ def create_custom_table_escopo(doc, itens_configurados):
             run.font.name = 'Calibri Light (Título)'
             run.font.size = Pt(10)
 
-        apply_paragraph_formatting(escopo_paragraph, alignment='left')
+        # Aplicar formatação no parágrafo
+        apply_paragraph_formatting(escopo_paragraph, alignment='justify')
+
+        # Adicionar espaçamento após o parágrafo (2pt)
+        paragraph_format = escopo_paragraph.paragraph_format
+        paragraph_format.space_after = Pt(2)
+
+        # Bordas para a célula de escopo
         add_double_borders(row.cells[1])
 
     return table
+
 
 
 # Outras funções permanecem inalteradas
