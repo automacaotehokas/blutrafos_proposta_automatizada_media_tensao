@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Proposta Automatizada - Média Tensão",layout="wide")
 
 # Adicionando a imagem do logo
-st.image("image1png.png", width=200)
+st.sidebar.image("image1png.png", width=200)
 
 # Título da página
 st.title("Proposta Automatizada - Média Tensão")
