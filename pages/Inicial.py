@@ -14,7 +14,8 @@ def aplicar_mascara_telefone():
     st.session_state['dados_iniciais']['fone'] = telefone_formatado
 
 def configurar_informacoes():
-    st.subheader('Dados Iniciais')
+    st.title('Dados Iniciais')
+    st.markdown("---")
     
     # Campo para a data da proposta
     data_hoje = datetime.today()
