@@ -131,7 +131,7 @@ O sistema oferece a opção de restringir o acesso apenas aos membros da equipe,
 
 Para dúvidas e suporte técnico, entre em contato com a **Tehokas Soluções**:
 
-- **Email**: contato@tehokassolucoes.com.br
+- **Email**: contato@tehokas.com.br
 - **Telefone**: +55 (31) 98872-5513
 
 ---
