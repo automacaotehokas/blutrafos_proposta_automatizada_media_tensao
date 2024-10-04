@@ -8,6 +8,7 @@ st.image("image1png.png", width=100)
 
 # Título da página
 st.title("Proposta Automatizada - Média Tensão")
+st.markdown("---")
 
 st.markdown(
     """
