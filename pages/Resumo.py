@@ -76,6 +76,7 @@ def verificar_dados_completos():
 # Página 3 para gerar o documento
 def pagina_gerar_documento():
     st.title("Resumo")
+    st.markdown("---")
 
     # Verifica se os dados da Pag1 estão preenchidos
     if 'dados_iniciais' not in st.session_state:
@@ -93,6 +94,8 @@ def pagina_gerar_documento():
     st.write("**Data:**", f"{st.session_state['dados_iniciais'].get('dia', '')}/{st.session_state['dados_iniciais'].get('mes', '')}/{st.session_state['dados_iniciais'].get('ano', '')}")
     st.write("**Revisão:**", st.session_state['dados_iniciais'].get('rev', ''))
     st.write("**Local:**", st.session_state['dados_iniciais'].get('local', ''))
+
+    st.markdown("---")
 
     # Mostrando as informações configuradas na Pag2
     st.subheader("Itens")
