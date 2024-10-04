@@ -10,7 +10,7 @@ class SharePoint:
         self.SHAREPOINT_URL = os.getenv('SHAREPOINT_URL')
         self.SHAREPOINT_SITE = os.getenv('SHAREPOINT_SITE')
         self.SHAREPOINT_DOC = os.getenv('SHAREPOINT_DOC_LIBRARY')
-        self.FOLDER_NAME = os.getenv('SHAREPOINT_FOLDER_NAME')  # Nova variável de ambiente para o folder
+        self.FOLDER_NAME = os.getenv('SHAREPOINT_FOLDER_NAME')
 
     def auth(self):
         # Autenticação no SharePoint
@@ -26,9 +26,15 @@ class SharePoint:
         return self.folder
 
     def download_file(self, file_name):
-        # Baixar um arquivo do SharePoint
+        # Baixar um arquivo do SharePoint e salvar localmente
         self._folder = self.connect_folder()
         file = self._folder.get_file(file_name)
-        with open(file_name, 'wb') as f:
+        
+        # Caminho para salvar o arquivo temporariamente
+        temp_path = os.path.join("/tmp", file_name)  # Use "/tmp" para armazenar temporariamente
+        
+        # Salvar o arquivo localmente no caminho temporário
+        with open(temp_path, 'wb') as f:
             f.write(file)
-        return file_name
+        
+        return temp_path  # Retorna o caminho do arquivo baixado

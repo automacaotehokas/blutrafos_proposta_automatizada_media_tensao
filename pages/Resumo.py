@@ -1,9 +1,9 @@
 import os
 import streamlit as st
 from io import BytesIO
-from replace import inserir_tabelas_word  # Certifique-se de importar a função correta do replace.py
-from docx import Document  # Certifique-se de ter o módulo 'python-docx' instalado
-from sharepoint_code import SharePoint  # Classe para baixar o template do SharePoint
+from replace import inserir_tabelas_word
+from docx import Document
+from sharepoint_code import SharePoint  # Classe SharePoint para baixar o template
 
 st.set_page_config(layout="wide")
 
@@ -16,7 +16,7 @@ def gerar_documento():
     template_name = 'Template_Proposta_Comercial.docx'
 
     # 1. Fazer o download do template do SharePoint
-    template_path = sp.download_file(template_name)  # Agora baixamos o template do SharePoint
+    template_path = sp.download_file(template_name)  # Agora baixamos o template e salvamos localmente em "/tmp"
 
     # Nome do arquivo de saída
     output_filename = f"Proposta Blutrafos nº BT {st.session_state['dados_iniciais']['bt']}-Rev{st.session_state['dados_iniciais']['rev']}.docx"
@@ -45,7 +45,7 @@ def gerar_documento():
 
         try:
             # Carrega o template do documento Word baixado do SharePoint
-            doc = Document(template_path)
+            doc = Document(template_path)  # Usando o caminho local temporário do arquivo
 
             # Chama a função para inserir as tabelas e substituir o conteúdo no documento
             doc = inserir_tabelas_word(doc, itens_configurados, '', replacements)  # Certifique-se de passar todos os argumentos corretamente
