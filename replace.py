@@ -4,6 +4,7 @@ from docx.oxml.ns import qn
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH 
 import math
+import streamlit as st
 
 # Função para definir a altura de uma linha
 def set_row_height(row, height_cm):
