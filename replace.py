@@ -70,7 +70,7 @@ def create_custom_table(doc, itens_configurados, observacao):
     table = doc.add_table(rows=num_linhas, cols=10)  # Adicionando a coluna de IPI
 
     # Definir larguras fixas para as colunas
-    col_widths = [Cm(1.1), Cm(1.25), Cm(1.90), Cm(1.0), Cm(2.5), Cm(1.0), Cm(1.75), Cm(2.63), Cm(2.63), Cm(1.15)]
+    col_widths = [Cm(1.1), Cm(1.25), Cm(1.90), Cm(1.0), Cm(2.7), Cm(1.0), Cm(1.75), Cm(2.63), Cm(2.63), Cm(1.15)]
 
     # Desabilitar o ajuste automático
     table.autofit = False  # Desativa o autofit
@@ -229,9 +229,6 @@ def create_custom_table_escopo(doc, itens_configurados):
 
             # Formata o texto com os dois valores arredondados
             tensao_secundaria_texto = f"{tensao_secundaria_arredondada}V/{tensao_calculada_arredondada}V"
-
-            # Formata o texto com os dois valores como inteiros
-            tensao_secundaria_texto = f"{tensao_secundaria_inteira}V/{tensao_calculada_inteira}V"
         
         except ValueError:
             # Se a conversão falhar, exibe apenas o valor original como texto e um aviso
