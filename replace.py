@@ -207,13 +207,22 @@ def create_custom_table_escopo(doc, itens_configurados):
 
         # Formatar a potência
         potencia_formatada = f"{item.get('Potência', 'N/A'):.0f}kVA" if isinstance(item.get('Potência'), (int, float)) else item.get('Potência', 'N/A')
+        # Verificar se a tensão secundária é numérica para realizar o cálculo
+        if isinstance(tensao_secundaria, (int, float)):
+            # Cálculo da tensão secundária dividida por 3 e pela raiz quadrada da tensão secundária
+            raiz_tensao_secundaria = math.sqrt(tensao_secundaria)
+            tensao_calculada = tensao_secundaria / (3 * raiz_tensao_secundaria)
+            tensao_calculada_arredondada = round(tensao_calculada, 2)  # Arredonda para 2 casas decimais
+            tensao_secundaria_texto = f"{tensao_secundaria}V / {tensao_calculada_arredondada}V"
+        else:
+            tensao_secundaria_texto = f"{tensao_secundaria}V"
 
         # Texto de escopo com negrito em palavras selecionadas
         escopo_text = (
             f"Transformador Trifásico **isolado a seco**, Classe de tensão **{classe_tensao}/1,1kV**, "
-            f"Marca e Fabricação Blutrafos, Potência: **{potencia_formatada}k**, Fator: **K={item.get('Fator K', 'N/A')}**, "
+            f"Marca e Fabricação Blutrafos, Potência: **{potencia_formatada}**, Fator: **K={item.get('Fator K', 'N/A')}**, "
             f"Tensão **Primária**: **{item.get('Tensão Primária', 'N/A')}V**, Derivações: **{item.get('Derivações', 'N/A')}kV**, "
-            f"Tensão **Secundária**: **{item.get('Tensão Secundária', 'N/A')}V**, Grupo de Ligação: **Dyn-1**, "
+            f"Tensão **Secundária**: **{tensao_secundaria_texto}**, Grupo de Ligação: **Dyn-1**, "
             f"Frequência: **60Hz**, NBI: **95kV**, Classe de Temperatura: F (155ºC), "
             f"Elevação Temperatura média dos enrolamentos: **100ºC**, Materiais dos enrolamentos: **Alumínio**, "
             f"Altitude de Instalação: **≤1000m**, Temperatura ambiente máxima: 40°C, "
