@@ -12,16 +12,10 @@ CLIENT_SECRET = os.getenv('AZURE_CLIENT_SECRET')
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 REDIRECT_URI = "http://localhost:8501"  # Ajuste conforme o seu ambiente
 SCOPES = ["User.Read"]
-EMAILS_PERMITIDOS = ["waleska@blutrafos.com.br",
-"leandro@blutrafos.com.br",
-"gabrielle.pinto@blutrafos.com.br",
-"vilson@blutrafos.com.br",
-"jaqueline.santos@blutrafos.com.br",
-"marlon@blutrafos.com.br",
-"daiana.raimundi@blutrafos.com.br",
-"alexandre@blutrafos.com.br"]
+EMAILS_PERMITIDOS = os.getenv('EMAILS_PERMITIDOS', '').split(',')
 
 def init_app():
+
     return ConfidentialClientApplication(
         CLIENT_ID,
         authority=AUTHORITY,
