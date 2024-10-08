@@ -10,12 +10,13 @@ CLIENT_ID = os.getenv('AZURE_CLIENT_ID')
 TENANT_ID = os.getenv('AZURE_TENANT_ID')
 CLIENT_SECRET = os.getenv('AZURE_CLIENT_SECRET')
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
-REDIRECT_URI = "https://blutrafoscomercialmediatensao.streamlit.app/"  # Ajuste conforme o seu ambiente
+REDIRECT_URI = "https://blutrafoscomercialmediatensao.streamlit.app"
 SCOPES = ["User.Read"]
+
+# Lê a variável de ambiente e converte para uma lista de e-mails permitidos
 EMAILS_PERMITIDOS = os.getenv('EMAILS_PERMITIDOS', '').split(',')
 
 def init_app():
-
     return ConfidentialClientApplication(
         CLIENT_ID,
         authority=AUTHORITY,
@@ -35,19 +36,44 @@ def autenticar_usuario():
                 return True
             else:
                 st.error("Você não tem permissão para acessar este aplicativo.")
-                return False
+                st.stop()
 
-    # Se a autenticação silenciosa falhar, redirecionar para a página de login
+    # Verifica se há um código de autorização na URL após o redirecionamento
+    query_params = st.experimental_get_query_params()
+    if "code" in query_params:
+        code = query_params["code"][0]  # Obtém o código de autorização da URL
+        result = app.acquire_token_by_authorization_code(
+            code=code,
+            scopes=SCOPES,
+            redirect_uri=REDIRECT_URI
+        )
+        
+        if "access_token" in result:
+            email = result['id_token_claims']['preferred_username']
+            if email in EMAILS_PERMITIDOS:
+                st.experimental_set_query_params()  # Limpa o código da URL após a autenticação
+                return True
+            else:
+                st.error("Você não tem permissão para acessar este aplicativo.")
+                st.stop()
+        else:
+            st.error("Falha na autenticação. Por favor, tente novamente.")
+            st.stop()
+
+    # Se o usuário não estiver autenticado, redirecionar para a página de login
     auth_url = app.get_authorization_request_url(
         scopes=SCOPES,
         redirect_uri=REDIRECT_URI
     )
     st.markdown(f"[Clique aqui para entrar]({auth_url})")
-    return False
+    st.stop()  # Para a execução do código até que o usuário esteja autenticado
 
-# Verifica se o usuário está autenticado e autorizado
-if not autenticar_usuario():
-    st.stop()  # Para a execução do código se o usuário não estiver autorizado
+def verificar_acesso():
+    if not autenticar_usuario():
+        st.stop()  # Para a execução do código se o usuário não estiver autorizado
+
+# Chama a verificação de acesso no início do código
+verificar_acesso()
 
 # Conteúdo principal da página após a autenticação
 # Adicionando a imagem do logo
@@ -66,7 +92,7 @@ st.markdown(
     }
     </style>
     <div class="justified-text">
-        Bem-vindo à Proposta Automatizada de Média Tensão da Blutrafos. Este sistema foi desenvolvido para 
+        Bem-vindo à Proposta Automatizada de Média Tensão. Este sistema foi desenvolvido para 
         facilitar o processo de criação de propostas comerciais personalizadas. Com ele, é possível configurar 
         itens técnicos, calcular preços e gerar documentos profissionais de maneira automatizada, otimizando 
         tempo e garantindo precisão nas informações fornecidas aos nossos clientes.
