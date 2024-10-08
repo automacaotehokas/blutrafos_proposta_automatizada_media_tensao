@@ -10,7 +10,7 @@ REDIRECT_URI = "https://blutrafoscomercialmediatensao.streamlit.app"
 SCOPES = ["User.Read"]
 
 EMAILS_PERMITIDOS = os.getenv('EMAILS_PERMITIDOS', '').split(',')
-##eu
+
 def init_app():
     return ConfidentialClientApplication(
         CLIENT_ID,
@@ -75,9 +75,8 @@ def autenticar_usuario():
             scopes=SCOPES,
             redirect_uri=REDIRECT_URI
         )
-        # Em vez de exibir um link, faça o redirecionamento automaticamente
-        st.experimental_set_query_params(auth_url=auth_url)
-        st.experimental_rerun()
+        st.markdown(f"[Clique aqui para entrar]({auth_url})")
+        st.stop()
 
 def verificar_acesso():
     # Chama a função de autenticação e verifica se o usuário tem permissão
