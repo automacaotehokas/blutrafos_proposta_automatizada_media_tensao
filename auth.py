@@ -19,7 +19,7 @@ def init_app():
     )
 
 def autenticar_usuario():
-    # Verifica se o usuário já está autenticado no session_state e autorizado
+    # Verifica se o estado de permissão já foi armazenado
     if 'autenticado' in st.session_state:
         if st.session_state['autenticado']:
             return True
