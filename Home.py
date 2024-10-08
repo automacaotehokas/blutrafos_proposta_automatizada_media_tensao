@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from msal import ConfidentialClientApplication
 
-# Configuração da página inicial
+# Configuração da página inicial - deve ser a primeira chamada
 st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="centered", initial_sidebar_state="collapsed")
 
 # CSS para esconder a seta da barra lateral e a barra lateral
@@ -87,9 +87,6 @@ def verificar_acesso():
 
 # Chama a verificação de acesso no início do código
 verificar_acesso()
-
-# Após a autenticação, altere o layout da página para wide e mostre o conteúdo
-st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="wide")
 
 # Conteúdo principal da página após a autenticação
 # Adicionando a imagem do logo
