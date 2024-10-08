@@ -67,6 +67,7 @@ def autenticar_usuario():
             if email in EMAILS_PERMITIDOS:
                 return True
             else:
+                # Mostrar mensagem de erro e interromper a execução se o usuário não tiver permissão
                 st.error("Você não tem permissão para acessar este aplicativo.")
                 st.stop()
 
@@ -86,6 +87,7 @@ def autenticar_usuario():
                 st.experimental_set_query_params()  # Limpa o código da URL após a autenticação
                 return True
             else:
+                # Mostrar mensagem de erro e interromper a execução se o usuário não tiver permissão
                 st.error("Você não tem permissão para acessar este aplicativo.")
                 st.stop()
         else:
