@@ -106,7 +106,7 @@ def verificar_acesso():
     if not autenticar_usuario():
         st.stop()  # Para a execução do código se o usuário não estiver autorizado
 
-# Chama a verificação de acesso no início do código
+# Certifique-se de que cada página no seu aplicativo tem a verificação de acesso
 verificar_acesso()
 
 # Após a autenticação, exibe a barra lateral completamente expandida
