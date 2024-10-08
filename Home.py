@@ -23,9 +23,14 @@ def exibir_barra_lateral(exibir):
         st.markdown(
             """
             <style>
-            /* Mostra a barra lateral */
-            [data-testid="stSidebar"], [data-testid="collapsedControl"] {
+            /* Mostra a barra lateral completamente expandida */
+            [data-testid="stSidebar"] {
                 display: block;
+                visibility: visible;
+            }
+            /* Esconde a seta para recolher a barra lateral */
+            [data-testid="collapsedControl"] {
+                display: none;
             }
             </style>
             """,
@@ -102,7 +107,7 @@ def verificar_acesso():
 # Chama a verificação de acesso no início do código
 verificar_acesso()
 
-# Após a autenticação, exibe a barra lateral
+# Após a autenticação, exibe a barra lateral completamente expandida
 exibir_barra_lateral(True)
 
 # Conteúdo principal da página após a autenticação
