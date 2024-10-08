@@ -1,122 +1,20 @@
 import os
 import streamlit as st
-from msal import ConfidentialClientApplication
+from auth import verificar_acesso, exibir_barra_lateral  # Importe as funções necessárias do arquivo auth.py
 
 # Configuração da página inicial - deve ser a primeira chamada
-st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="centered", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="wide")
 
-# Função para exibir ou ocultar a barra lateral com base no estado de autenticação
-def exibir_barra_lateral(exibir):
-    if not exibir:
-        st.markdown(
-            """
-            <style>
-            /* Esconde a seta da barra lateral e a barra lateral */
-            [data-testid="stSidebar"], [data-testid="collapsedControl"] {
-                display: none;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    else:
-        st.markdown(
-            """
-            <style>
-            /* Mostra a barra lateral completamente expandida */
-            [data-testid="stSidebar"] {
-                display: block;
-                visibility: visible;
-            }
-            /* Esconde a seta para recolher a barra lateral */
-            [data-testid="collapsedControl"] {
-                display: none;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
-# Configurações de autenticação
-CLIENT_ID = os.getenv('AZURE_CLIENT_ID')
-TENANT_ID = os.getenv('AZURE_TENANT_ID')
-CLIENT_SECRET = os.getenv('AZURE_CLIENT_SECRET')
-AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
-REDIRECT_URI = "https://blutrafoscomercialmediatensao.streamlit.app"
-SCOPES = ["User.Read"]
-
-# Lê a variável de ambiente e converte para uma lista de e-mails permitidos
-EMAILS_PERMITIDOS = os.getenv('EMAILS_PERMITIDOS', '').split(',')
-
-def init_app():
-    return ConfidentialClientApplication(
-        CLIENT_ID,
-        authority=AUTHORITY,
-        client_credential=CLIENT_SECRET,
-    )
-
-def autenticar_usuario():
-    app = init_app()
-    accounts = app.get_accounts()
-
-    # Tenta autenticar de forma silenciosa se o usuário já estiver logado no navegador
-    if accounts:
-        result = app.acquire_token_silent(SCOPES, account=accounts[0])
-        if result and "access_token" in result:
-            email = result['id_token_claims']['preferred_username']
-            if email in EMAILS_PERMITIDOS:
-                return True
-            else:
-                # Mostrar mensagem de erro e interromper a execução se o usuário não tiver permissão
-                st.error("Você não tem permissão para acessar este aplicativo.")
-                st.stop()
-
-    # Verifica se há um código de autorização na URL após o redirecionamento
-    query_params = st.experimental_get_query_params()
-    if "code" in query_params:
-        code = query_params["code"][0]  # Obtém o código de autorização da URL
-        result = app.acquire_token_by_authorization_code(
-            code=code,
-            scopes=SCOPES,
-            redirect_uri=REDIRECT_URI
-        )
-        
-        if "access_token" in result:
-            email = result['id_token_claims']['preferred_username']
-            if email in EMAILS_PERMITIDOS:
-                st.experimental_set_query_params()  # Limpa o código da URL após a autenticação
-                return True
-            else:
-                # Mostrar mensagem de erro e interromper a execução se o usuário não tiver permissão
-                st.error("Você não tem permissão para acessar este aplicativo.")
-                st.stop()
-        else:
-            st.error("Falha na autenticação. Por favor, tente novamente.")
-            st.stop()
-
-    # Se o usuário não estiver autenticado, redirecionar para a página de login
-    auth_url = app.get_authorization_request_url(
-        scopes=SCOPES,
-        redirect_uri=REDIRECT_URI
-    )
-    st.markdown(f"[Clique aqui para entrar]({auth_url})")
-    st.stop()  # Para a execução do código até que o usuário esteja autenticado
-
-def verificar_acesso():
-    if not autenticar_usuario():
-        st.stop()  # Para a execução do código se o usuário não estiver autorizado
-
-# Certifique-se de que cada página no seu aplicativo tem a verificação de acesso
+# Verificar autenticação e permissão no início
 verificar_acesso()
 
 # Após a autenticação, exibe a barra lateral completamente expandida
 exibir_barra_lateral(True)
 
 # Conteúdo principal da página após a autenticação
-# Adicionando a imagem do logo
-st.image("image1png.png", width=100)
+st.image("image1png.png", width=100)  # Adicionando a imagem do logo
 
-# Título da página
+# Título e descrição da página
 st.title("Proposta Automatizada - Média Tensão")
 st.markdown("---")
 
