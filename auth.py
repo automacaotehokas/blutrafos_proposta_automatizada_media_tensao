@@ -19,9 +19,13 @@ def init_app():
     )
 
 def autenticar_usuario():
-    # Verifica se o usuário já está autenticado no session_state
-    if 'autenticado' in st.session_state and st.session_state['autenticado']:
-        return True
+    # Verifica se o usuário já está autenticado no session_state e autorizado
+    if 'autenticado' in st.session_state:
+        if st.session_state['autenticado']:
+            return True
+        else:
+            exibir_mensagem_permissao_negada()
+            return False
 
     app = init_app()
     accounts = app.get_accounts()
@@ -37,19 +41,19 @@ def autenticar_usuario():
                 return True
             else:
                 st.session_state['autenticado'] = False
-                st.error("Você não tem permissão para acessar este aplicativo.")
-                st.stop()
+                exibir_mensagem_permissao_negada()
+                return False
 
     # Verifica se há um código de autorização na URL após o redirecionamento
     query_params = st.experimental_get_query_params()
     if "code" in query_params:
-        code = query_params["code"][0]  # Obtém o código de autorização da URL
+        code = query_params["code"][0]
         result = app.acquire_token_by_authorization_code(
             code=code,
             scopes=SCOPES,
             redirect_uri=REDIRECT_URI
         )
-        
+
         if "access_token" in result:
             email = result['id_token_claims']['preferred_username']
             if email in EMAILS_PERMITIDOS:
@@ -59,21 +63,26 @@ def autenticar_usuario():
                 return True
             else:
                 st.session_state['autenticado'] = False
-                st.error("Você não tem permissão para acessar este aplicativo.")
-                st.stop()
+                exibir_mensagem_permissao_negada()
+                return False
         else:
             st.error("Falha na autenticação. Por favor, tente novamente.")
             st.stop()
 
-    # Se o usuário não estiver autenticado, redirecionar para a página de login
-    auth_url = app.get_authorization_request_url(
-        scopes=SCOPES,
-        redirect_uri=REDIRECT_URI
-    )
-    st.markdown(f"[Clique aqui para entrar]({auth_url})")
-    st.stop()
+    # Se o usuário não estiver autenticado e não tiver sido marcado como sem permissão
+    if 'autenticado' not in st.session_state:
+        auth_url = app.get_authorization_request_url(
+            scopes=SCOPES,
+            redirect_uri=REDIRECT_URI
+        )
+        st.markdown(f"[Clique aqui para entrar]({auth_url})")
+        st.stop()
 
 def verificar_acesso():
-    # Chama a função de autenticação apenas se o usuário não estiver autenticado
+    # Chama a função de autenticação e verifica se o usuário tem permissão
     if not autenticar_usuario():
         st.stop()
+
+def exibir_mensagem_permissao_negada():
+    st.error("Você não tem permissão para acessar este aplicativo.")
+    st.stop()
