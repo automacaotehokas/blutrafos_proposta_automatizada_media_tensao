@@ -3,7 +3,7 @@ import streamlit as st
 from msal import ConfidentialClientApplication
 
 # Configuração da página inicial
-st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="wide")
+st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="centered", initial_sidebar_state="collapsed")
 
 # Configurações de autenticação
 CLIENT_ID = os.getenv('AZURE_CLIENT_ID')
@@ -74,6 +74,9 @@ def verificar_acesso():
 
 # Chama a verificação de acesso no início do código
 verificar_acesso()
+
+# Configuração da página após a autenticação bem-sucedida
+st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="wide")
 
 # Conteúdo principal da página após a autenticação
 # Adicionando a imagem do logo
