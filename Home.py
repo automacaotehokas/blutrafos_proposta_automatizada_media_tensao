@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-from auth import verificar_acesso, exibir_barra_lateral  # Importe as funções necessárias do arquivo auth.py
+from auth import verificar_acesso # Importe as funções necessárias do arquivo auth.py
 
 # Configuração da página inicial - deve ser a primeira chamada
 st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="wide")
