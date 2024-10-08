@@ -8,9 +8,6 @@ st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="
 # Verificar autenticação e permissão no início
 verificar_acesso()
 
-# Após a autenticação, exibe a barra lateral completamente expandida
-exibir_barra_lateral(True)
-
 # Conteúdo principal da página após a autenticação
 st.image("image1png.png", width=100)  # Adicionando a imagem do logo
 

@@ -33,8 +33,10 @@ def autenticar_usuario():
             email = result['id_token_claims']['preferred_username']
             if email in EMAILS_PERMITIDOS:
                 st.session_state['autenticado'] = True
+                st.session_state['email'] = email
                 return True
             else:
+                st.session_state['autenticado'] = False
                 st.error("Você não tem permissão para acessar este aplicativo.")
                 st.stop()
 
@@ -52,9 +54,11 @@ def autenticar_usuario():
             email = result['id_token_claims']['preferred_username']
             if email in EMAILS_PERMITIDOS:
                 st.session_state['autenticado'] = True
+                st.session_state['email'] = email
                 st.experimental_set_query_params()  # Limpa o código da URL após a autenticação
                 return True
             else:
+                st.session_state['autenticado'] = False
                 st.error("Você não tem permissão para acessar este aplicativo.")
                 st.stop()
         else:
