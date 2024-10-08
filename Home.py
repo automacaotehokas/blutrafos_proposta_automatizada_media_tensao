@@ -5,18 +5,32 @@ from msal import ConfidentialClientApplication
 # Configuração da página inicial - deve ser a primeira chamada
 st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="centered", initial_sidebar_state="collapsed")
 
-# CSS para esconder a seta da barra lateral e a barra lateral
-st.markdown(
-    """
-    <style>
-    /* Esconde a seta da barra lateral e a barra lateral */
-    [data-testid="stSidebar"] {
-        display: none;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# Função para exibir ou ocultar a barra lateral com base no estado de autenticação
+def exibir_barra_lateral(exibir):
+    if not exibir:
+        st.markdown(
+            """
+            <style>
+            /* Esconde a seta da barra lateral e a barra lateral */
+            [data-testid="stSidebar"], [data-testid="collapsedControl"] {
+                display: none;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            """
+            <style>
+            /* Mostra a barra lateral */
+            [data-testid="stSidebar"], [data-testid="collapsedControl"] {
+                display: block;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
 # Configurações de autenticação
 CLIENT_ID = os.getenv('AZURE_CLIENT_ID')
@@ -87,6 +101,9 @@ def verificar_acesso():
 
 # Chama a verificação de acesso no início do código
 verificar_acesso()
+
+# Após a autenticação, exibe a barra lateral
+exibir_barra_lateral(True)
 
 # Conteúdo principal da página após a autenticação
 # Adicionando a imagem do logo
