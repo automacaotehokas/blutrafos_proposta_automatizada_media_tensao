@@ -10,7 +10,7 @@ REDIRECT_URI = "https://blutrafoscomercialmediatensao.streamlit.app"
 SCOPES = ["User.Read"]
 
 EMAILS_PERMITIDOS = os.getenv('EMAILS_PERMITIDOS', '').split(',')
-
+##eu
 def init_app():
     return ConfidentialClientApplication(
         CLIENT_ID,
