@@ -1,7 +1,16 @@
 import streamlit as st
 from datetime import datetime
+from Home import verificar_acesso  # Importe a função de verificação
 
 st.set_page_config(layout="wide")
+
+# Verificar autenticação e permissão antes de qualquer outra coisa
+verificar_acesso()
+
+# Conteúdo da página após a autenticação
+st.title("Inicial")
+# Adicione o conteúdo da página aqui
+
 
 def aplicar_mascara_telefone():
     telefone = ''.join(filter(str.isdigit, st.session_state['fone_raw']))  # Remove todos os caracteres que não são dígitos
