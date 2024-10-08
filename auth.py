@@ -75,8 +75,9 @@ def autenticar_usuario():
             scopes=SCOPES,
             redirect_uri=REDIRECT_URI
         )
-        st.markdown(f"[Clique aqui para entrar]({auth_url})")
-        st.stop()
+        # Em vez de exibir um link, faça o redirecionamento automaticamente
+        st.experimental_set_query_params(auth_url=auth_url)
+        st.experimental_rerun()
 
 def verificar_acesso():
     # Chama a função de autenticação e verifica se o usuário tem permissão
