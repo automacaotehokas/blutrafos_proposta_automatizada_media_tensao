@@ -22,13 +22,10 @@ def verificar_dados_iniciais():
 
 
 def pagina_dados_iniciais():
-
     # Verificação dos dados iniciais antes de prosseguir
     if verificar_dados_iniciais():
         st.success("Todos os dados iniciais foram preenchidos corretamente.")
-        
         # Continue com o restante da lógica da página, como a exibição de tabelas ou formulários adicionais
-        # Aqui você pode incluir a lógica para os itens configurados
     else:
         st.error("Por favor, preencha todos os campos obrigatórios nos dados iniciais na Pag1 antes de continuar.")
 
@@ -93,17 +90,13 @@ def obter_cidades():
     
 def calcular_icms(cidade_origem, cidade_destino):
     # Aqui é apenas um exemplo fixo para fins de teste. Substitua pela lógica real de cálculo de ICMS.
-    # Lógica real deveria consultar uma API de ICMS ou base de dados que contenha essas informações.
     if cidade_origem == "Blumenau/SC" and cidade_destino:
-        # Exemplo fictício: 12% de ICMS para todas as cidades
-        return 12.0
+        return 12.0  # Exemplo fictício: 12% de ICMS para todas as cidades
     else:
         return 0.0
 
 # Obter a lista de cidades e estados
 cidades_estados = obter_cidades()
-
-
 
 # Input para as variáveis usando o valor armazenado no session_state
 lucro = st.number_input('Lucro (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['lucro'])
@@ -112,15 +105,15 @@ st.session_state['lucro'] = lucro  # Atualiza o valor no session_state
 icms = st.number_input('ICMS (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['icms'])
 st.session_state['icms'] = icms  # Atualiza o valor no session_state
 
-frete = st.number_input('Frete (111):', min_value=0.0, step=0.1, value=st.session_state['frete'])
+frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
 st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
-cidades_estados = obter_cidades()
 if cidades_estados:
+    localfinal_default = "São Paulo/SP" if "São Paulo/SP" in cidades_estados else cidades_estados[0]
     cidade_destino = st.selectbox(
         'Selecione a cidade de destino:',
         cidades_estados,
-        index=cidades_estados.index(st.session_state.get('localfinal', cidades_estados[0])) if 'localfinal' in st.session_state else 0
+        index=cidades_estados.index(st.session_state.get('localfinal', localfinal_default))
     )
     st.session_state['localfinal'] = cidade_destino
     st.write(f"Local selecionado: {st.session_state['localfinal']}")
@@ -135,11 +128,8 @@ if cidades_estados:
     else:
         st.write("Não foi possível calcular a alíquota de ICMS para a cidade selecionada.")
 
-    # Calcular ICMS com base em Blumenau/SC como cidade de origem
-    cidade_origem = "Blumenau/SC"
-    aliquota_icms = calcular_icms(cidade_origem, cidade_destino)
-
-
+comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
+st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
 
 irpj_cssl = 2.28 / 100  # Valor fixo
 tkxadmmkt = 3.7 / 100  # Valor fixo
@@ -157,13 +147,13 @@ percentuais_k = {
     13: 0.2317, # k13
     20: 0.3359  # k20
 }
-comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
-st.session_state['comissao'] = comissao 
+
 # Calcular percentuais como a soma dos valores em decimal
 percentuais = (lucro / 100) + (icms / 100) + (comissao / 100) + (frete / 100) + irpj_cssl + tkxadmmkt + mocusfixo + pisconfins
 
 # Seleção da quantidade de itens
 quantidade_itens = st.number_input('Quantidade de Itens:', min_value=1, step=1, value=len(st.session_state['itens_configurados']) or 1)
+
 
 # Criar ou ajustar os itens configurados no session_state
 while len(st.session_state['itens_configurados']) < quantidade_itens:
