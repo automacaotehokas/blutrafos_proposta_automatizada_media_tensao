@@ -157,7 +157,8 @@ percentuais_k = {
     13: 0.2317, # k13
     20: 0.3359  # k20
 }
-
+comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
+st.session_state['comissao'] = comissao 
 # Calcular percentuais como a soma dos valores em decimal
 percentuais = (lucro / 100) + (icms / 100) + (comissao / 100) + (frete / 100) + irpj_cssl + tkxadmmkt + mocusfixo + pisconfins
 
