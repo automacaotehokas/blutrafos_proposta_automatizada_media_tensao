@@ -112,7 +112,7 @@ st.session_state['lucro'] = lucro  # Atualiza o valor no session_state
 icms = st.number_input('ICMS (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['icms'])
 st.session_state['icms'] = icms  # Atualiza o valor no session_state
 
-frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
+frete = st.number_input('Frete (111):', min_value=0.0, step=0.1, value=st.session_state['frete'])
 st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
 cidades_estados = obter_cidades()
