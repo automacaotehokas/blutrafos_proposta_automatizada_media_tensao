@@ -81,7 +81,7 @@ def verificar_dados_completos():
     itens_configurados = st.session_state.get('itens_configurados', [])
 
     # Lista de campos obrigatórios em dados_iniciais
-    campos_obrigatorios = ['cliente', 'nomeCliente', 'fone', 'email', 'bt', 'obra', 'dia', 'mes', 'ano', 'rev', 'local']
+    campos_obrigatorios = ['cliente', 'nomeCliente', 'fone', 'email', 'bt', 'dia', 'mes', 'ano', 'rev', 'local']
     
     # Verifica se algum campo obrigatório está vazio
     for campo in campos_obrigatorios:
