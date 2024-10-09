@@ -25,7 +25,6 @@ def pagina_dados_iniciais():
     # Verificação dos dados iniciais antes de prosseguir
     if verificar_dados_iniciais():
         st.success("Todos os dados iniciais foram preenchidos corretamente.")
-        # Continue com o restante da lógica da página, como a exibição de tabelas ou formulários adicionais
     else:
         st.error("Por favor, preencha todos os campos obrigatórios nos dados iniciais na Pag1 antes de continuar.")
 
@@ -121,6 +120,16 @@ if cidades_estados:
         st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
     else:
         st.write("Não foi possível calcular a alíquota de ICMS para a cidade selecionada.")
+
+# Input para as variáveis usando o valor armazenado no session_state
+lucro = st.number_input('Lucro (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['lucro'])
+st.session_state['lucro'] = lucro  # Atualiza o valor no session_state
+
+icms = st.number_input('ICMS (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['icms'])
+st.session_state['icms'] = icms  # Atualiza o valor no session_state
+
+frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
+st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
 comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
 st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
