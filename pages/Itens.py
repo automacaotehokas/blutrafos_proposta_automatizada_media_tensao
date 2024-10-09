@@ -75,6 +75,9 @@ if 'frete' not in st.session_state:
 if 'comissao' not in st.session_state:
     st.session_state['comissao'] = 5.0
 
+if 'localfinal' not in st.session_state:
+    st.session_state['localfinal'] = ''
+
 def obter_cidades():
     # Fazendo a requisição para a API da BrasilAPI para obter todos os municípios
     url = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
@@ -106,12 +109,10 @@ st.session_state['icms'] = icms  # Atualiza o valor no session_state
 frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
 st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
+cidades_estados = obter_cidades()
 if cidades_estados:
-    # Campo de seleção para a cidade/estado
-    localfinal = st.selectbox('Local Frete:', cidades_estados, format_func=lambda x: x)
-    st.session_state['localfinal'] = localfinal  # Atualiza o valor no session_state
-
-    st.write(f"Local selecionado: {st.session_state['localfinal']}")
+    localfinal = st.selectbox('Local Frete:', cidades_estados, index=cidades_estados.index(st.session_state['localfinal']) if st.session_state['localfinal'] in cidades_estados else 0)
+    st.session_state['localfinal'] = localfinal
 
 comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
 st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
