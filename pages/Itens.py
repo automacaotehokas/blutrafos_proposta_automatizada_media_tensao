@@ -61,11 +61,32 @@ st.markdown("---")
 # Busca dos dados (otimizado com cache)
 df = buscar_dados()
 
-# Variáveis fixas (não aparecem para o usuário)
-lucro = st.number_input('Lucro (%):', min_value=0.0, max_value=100.0, step=0.1, value=5.0)   # Convertendo para decimal
-icms = st.number_input('ICMS (%):', min_value=0.0, max_value=100.0, step=0.1, value=12.0)  # Convertendo para decimal
-frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=5.0)
-comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=5.0)
+# Verificar se as variáveis já estão no session_state, se não, inicializá-las
+if 'lucro' not in st.session_state:
+    st.session_state['lucro'] = 5.0
+
+if 'icms' not in st.session_state:
+    st.session_state['icms'] = 12.0
+
+if 'frete' not in st.session_state:
+    st.session_state['frete'] = 5.0
+
+if 'comissao' not in st.session_state:
+    st.session_state['comissao'] = 5.0
+
+# Input para as variáveis usando o valor armazenado no session_state
+lucro = st.number_input('Lucro (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['lucro'])
+st.session_state['lucro'] = lucro  # Atualiza o valor no session_state
+
+icms = st.number_input('ICMS (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['icms'])
+st.session_state['icms'] = icms  # Atualiza o valor no session_state
+
+frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
+st.session_state['frete'] = frete  # Atualiza o valor no session_state
+
+comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
+st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
+
 irpj_cssl = 2.28 / 100  # Valor fixo
 tkxadmmkt = 3.7 / 100  # Valor fixo
 mocusfixo = 20 / 100    # Valor fixo
