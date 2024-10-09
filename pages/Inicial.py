@@ -8,11 +8,6 @@ st.set_page_config(layout="wide")
 verificar_acesso()
 
 
-# Conteúdo da página após a autenticação
-st.title("Inicial")
-# Adicione o conteúdo da página aqui
-
-
 def aplicar_mascara_telefone():
     telefone = ''.join(filter(str.isdigit, st.session_state['fone_raw']))  # Remove todos os caracteres que não são dígitos
     if len(telefone) == 11:
