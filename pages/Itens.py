@@ -125,7 +125,11 @@ st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
 cidades_estados = obter_cidades()
 if cidades_estados:
-    cidade_destino = st.selectbox('Selecione a cidade de destino:', cidades_estados, index=cidades_estados.index(st.session_state.get('localfinal', cidades_estados[0])) if 'localfinal' in st.session_state else 0)
+    cidade_destino = st.selectbox(
+        'Selecione a cidade de destino:',
+        cidades_estados,
+        index=cidades_estados.index(st.session_state.get('localfinal', cidades_estados[0])) if 'localfinal' in st.session_state else 0
+    )
     st.session_state['localfinal'] = cidade_destino
     st.write(f"Local selecionado: {st.session_state['localfinal']}")
 
@@ -133,10 +137,8 @@ if cidades_estados:
     cidade_origem = "Blumenau/SC"
     aliquota_icms = calcular_icms(cidade_origem, cidade_destino)
 
+    # Exibir a alíquota de ICMS
     st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
-
-comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
-st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
 
 irpj_cssl = 2.28 / 100  # Valor fixo
 tkxadmmkt = 3.7 / 100  # Valor fixo
