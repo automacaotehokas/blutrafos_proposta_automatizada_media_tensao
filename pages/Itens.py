@@ -138,7 +138,7 @@ if cidades_estados:
     aliquota_icms = calcular_icms(cidade_origem, cidade_destino)
 
     # Exibir a alíquota de ICMS
-    st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
+st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
 
 irpj_cssl = 2.28 / 100  # Valor fixo
 tkxadmmkt = 3.7 / 100  # Valor fixo
