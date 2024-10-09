@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from config_db import conectar_banco
 from auth import verificar_acesso 
+import requests
 
 verificar_acesso()
 
@@ -74,6 +75,30 @@ if 'frete' not in st.session_state:
 if 'comissao' not in st.session_state:
     st.session_state['comissao'] = 5.0
 
+import streamlit as st
+import requests
+
+def obter_cidades():
+    # Fazendo a requisição para a API da BrasilAPI para obter todos os municípios
+    url = "https://brasilapi.com.br/api/ibge/municipios/v1"
+    response = requests.get(url)
+    
+    # Verifica se a resposta foi bem-sucedida
+    if response.status_code == 200:
+        # Extrai os dados JSON da resposta
+        dados = response.json()
+        # Cria uma lista de cidades no formato Cidade/UF
+        cidades = [f"{cidade['nome']}/{cidade['microrregiao']['mesorregiao']['UF']['sigla']}" for cidade in dados]
+        return cidades
+    else:
+        st.error("Não foi possível carregar as cidades. Tente novamente mais tarde.")
+        return []
+
+# Obter a lista de cidades e estados
+cidades_estados = obter_cidades()
+
+
+
 # Input para as variáveis usando o valor armazenado no session_state
 lucro = st.number_input('Lucro (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['lucro'])
 st.session_state['lucro'] = lucro  # Atualiza o valor no session_state
@@ -83,6 +108,13 @@ st.session_state['icms'] = icms  # Atualiza o valor no session_state
 
 frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
 st.session_state['frete'] = frete  # Atualiza o valor no session_state
+
+if cidades_estados:
+    # Campo de seleção para a cidade/estado
+    localfinal = st.selectbox('Local Frete:', cidades_estados, format_func=lambda x: x)
+    st.session_state['localfinal'] = localfinal  # Atualiza o valor no session_state
+
+    st.write(f"Local selecionado: {st.session_state['localfinal']}")
 
 comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
 st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
