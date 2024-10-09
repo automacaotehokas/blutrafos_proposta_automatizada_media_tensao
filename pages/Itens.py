@@ -75,23 +75,20 @@ if 'frete' not in st.session_state:
 if 'comissao' not in st.session_state:
     st.session_state['comissao'] = 5.0
 
-import streamlit as st
-import requests
-
 def obter_cidades():
     # Fazendo a requisição para a API da BrasilAPI para obter todos os municípios
     url = "https://brasilapi.com.br/api/ibge/municipios/v1"
-    response = requests.get(url)
-    
-    # Verifica se a resposta foi bem-sucedida
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Levanta um erro para status de resposta HTTP 4xx/5xx
+        
         # Extrai os dados JSON da resposta
         dados = response.json()
         # Cria uma lista de cidades no formato Cidade/UF
         cidades = [f"{cidade['nome']}/{cidade['microrregiao']['mesorregiao']['UF']['sigla']}" for cidade in dados]
         return cidades
-    else:
-        st.error("Não foi possível carregar as cidades. Tente novamente mais tarde.")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Erro ao carregar as cidades: {e}")
         return []
 
 # Obter a lista de cidades e estados
