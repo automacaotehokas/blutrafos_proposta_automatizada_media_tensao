@@ -165,7 +165,6 @@ percentuais = (lucro / 100) + (icms / 100) + (comissao / 100) + (frete / 100) + 
 # Seleção da quantidade de itens
 quantidade_itens = st.number_input('Quantidade de Itens:', min_value=1, step=1, value=len(st.session_state['itens_configurados']) or 1)
 
-
 # Criar ou ajustar os itens configurados no session_state
 while len(st.session_state['itens_configurados']) < quantidade_itens:
     item_index = len(st.session_state['itens_configurados'])
