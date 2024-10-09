@@ -73,7 +73,7 @@ if 'comissao' not in st.session_state:
     st.session_state['comissao'] = 5.0
 
 if 'localfinal' not in st.session_state:
-    st.session_state['localfinal'] = ''
+    st.session_state['localfinal'] = 'São Paulo/SP'
 
 @st.cache_data
 def obter_cidades():
@@ -89,31 +89,25 @@ def obter_cidades():
         return []
     
 def calcular_icms(cidade_origem, cidade_destino):
-    # Aqui é apenas um exemplo fixo para fins de teste. Substitua pela lógica real de cálculo de ICMS.
+    # Exemplo fictício: 12% de ICMS para todas as cidades
     if cidade_origem == "Blumenau/SC" and cidade_destino:
-        return 12.0  # Exemplo fictício: 12% de ICMS para todas as cidades
+        return 12.0
     else:
         return 0.0
 
 # Obter a lista de cidades e estados
 cidades_estados = obter_cidades()
 
-# Input para as variáveis usando o valor armazenado no session_state
-lucro = st.number_input('Lucro (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['lucro'])
-st.session_state['lucro'] = lucro  # Atualiza o valor no session_state
-
-icms = st.number_input('ICMS (%):', min_value=0.0, max_value=100.0, step=0.1, value=st.session_state['icms'])
-st.session_state['icms'] = icms  # Atualiza o valor no session_state
-
-frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
-st.session_state['frete'] = frete  # Atualiza o valor no session_state
-
 if cidades_estados:
-    localfinal_default = "São Paulo/SP" if "São Paulo/SP" in cidades_estados else cidades_estados[0]
+    # Verifica se o valor armazenado no session_state existe na lista de cidades
+    cidade_default = st.session_state.get('localfinal', 'São Paulo/SP')
+    if cidade_default not in cidades_estados:
+        cidade_default = 'São Paulo/SP'
+        
     cidade_destino = st.selectbox(
         'Selecione a cidade de destino:',
         cidades_estados,
-        index=cidades_estados.index(st.session_state.get('localfinal', localfinal_default))
+        index=cidades_estados.index(cidade_default)
     )
     st.session_state['localfinal'] = cidade_destino
     st.write(f"Local selecionado: {st.session_state['localfinal']}")
