@@ -123,6 +123,7 @@ st.session_state['icms'] = icms  # Atualiza o valor no session_state
 frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
 st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
+cidades_estados = obter_cidades()
 if cidades_estados:
     cidade_destino = st.selectbox('Selecione a cidade de destino:', cidades_estados, index=cidades_estados.index(st.session_state.get('localfinal', cidades_estados[0])) if 'localfinal' in st.session_state else 0)
     st.session_state['localfinal'] = cidade_destino
