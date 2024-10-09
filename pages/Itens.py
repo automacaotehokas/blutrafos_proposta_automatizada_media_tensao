@@ -92,21 +92,13 @@ def obter_cidades():
         return []
     
 def calcular_icms(cidade_origem, cidade_destino):
-    # Estados extraídos das cidades de origem e destino
-    estado_origem = cidade_origem.split('/')[-1]
-    estado_destino = cidade_destino.split('/')[-1]
-
-    # Definir a alíquota de ICMS
-    if estado_origem == estado_destino:
-        aliquota_icms = 0.17  # Alíquota interna de SC
+    # Aqui é apenas um exemplo fixo para fins de teste. Substitua pela lógica real de cálculo de ICMS.
+    # Lógica real deveria consultar uma API de ICMS ou base de dados que contenha essas informações.
+    if cidade_origem == "Blumenau/SC" and cidade_destino:
+        # Exemplo fictício: 12% de ICMS para todas as cidades
+        return 12.0
     else:
-        # Alíquotas interestaduais de SC para outros estados
-        if estado_destino in ['RS', 'PR', 'SP', 'RJ', 'MG']:
-            aliquota_icms = 0.12
-        else:
-            aliquota_icms = 0.07
-
-    return aliquota_icms * 100 
+        return 0.0
 
 # Obter a lista de cidades e estados
 cidades_estados = obter_cidades()
@@ -132,6 +124,16 @@ if cidades_estados:
     )
     st.session_state['localfinal'] = cidade_destino
     st.write(f"Local selecionado: {st.session_state['localfinal']}")
+
+    # Calcular ICMS com base em Blumenau/SC como cidade de origem
+    cidade_origem = "Blumenau/SC"
+    aliquota_icms = calcular_icms(cidade_origem, cidade_destino)
+
+    # Verificar se o valor da alíquota foi calculado corretamente e exibir
+    if aliquota_icms:
+        st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
+    else:
+        st.write("Não foi possível calcular a alíquota de ICMS para a cidade selecionada.")
 
     # Calcular ICMS com base em Blumenau/SC como cidade de origem
     cidade_origem = "Blumenau/SC"
@@ -327,5 +329,3 @@ st.markdown("---")
 # Soma do preço total
 total_fornecimento = resumo_df['Preço Total'].sum()
 st.subheader(f"Valor Total do Fornecimento: R$ {total_fornecimento:,.2f}")
-# Exibir a alíquota de ICMS
-st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
