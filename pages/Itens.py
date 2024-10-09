@@ -78,21 +78,35 @@ if 'comissao' not in st.session_state:
 if 'localfinal' not in st.session_state:
     st.session_state['localfinal'] = ''
 
+@st.cache_data
 def obter_cidades():
-    # Fazendo a requisição para a API da BrasilAPI para obter todos os municípios
     url = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Levanta um erro para status de resposta HTTP 4xx/5xx
-        
-        # Extrai os dados JSON da resposta
+        response.raise_for_status()
         dados = response.json()
-        # Cria uma lista de cidades no formato Cidade/UF
         cidades = [f"{cidade['nome']}/{cidade['microrregiao']['mesorregiao']['UF']['sigla']}" for cidade in dados]
         return cidades
     except requests.exceptions.RequestException as e:
         st.error(f"Erro ao carregar as cidades: {e}")
         return []
+    
+def calcular_icms(cidade_origem, cidade_destino):
+    # Estados extraídos das cidades de origem e destino
+    estado_origem = cidade_origem.split('/')[-1]
+    estado_destino = cidade_destino.split('/')[-1]
+
+    # Definir a alíquota de ICMS
+    if estado_origem == estado_destino:
+        aliquota_icms = 0.17  # Alíquota interna de SC
+    else:
+        # Alíquotas interestaduais de SC para outros estados
+        if estado_destino in ['RS', 'PR', 'SP', 'RJ', 'MG']:
+            aliquota_icms = 0.12
+        else:
+            aliquota_icms = 0.07
+
+    return aliquota_icms * 100 
 
 # Obter a lista de cidades e estados
 cidades_estados = obter_cidades()
@@ -109,10 +123,16 @@ st.session_state['icms'] = icms  # Atualiza o valor no session_state
 frete = st.number_input('Frete (%):', min_value=0.0, step=0.1, value=st.session_state['frete'])
 st.session_state['frete'] = frete  # Atualiza o valor no session_state
 
-cidades_estados = obter_cidades()
 if cidades_estados:
-    localfinal = st.selectbox('Local Frete:', cidades_estados, index=cidades_estados.index(st.session_state['localfinal']) if st.session_state['localfinal'] in cidades_estados else 0)
-    st.session_state['localfinal'] = localfinal
+    cidade_destino = st.selectbox('Selecione a cidade de destino:', cidades_estados, index=cidades_estados.index(st.session_state.get('localfinal', cidades_estados[0])) if 'localfinal' in st.session_state else 0)
+    st.session_state['localfinal'] = cidade_destino
+    st.write(f"Local selecionado: {st.session_state['localfinal']}")
+
+    # Calcular ICMS com base em Blumenau/SC como cidade de origem
+    cidade_origem = "Blumenau/SC"
+    aliquota_icms = calcular_icms(cidade_origem, cidade_destino)
+
+    st.write(f"A alíquota de ICMS de {cidade_origem} para {cidade_destino} é: {aliquota_icms:.2f}%")
 
 comissao = st.number_input('Comissão (%):', min_value=0.0, step=0.1, value=st.session_state['comissao'])
 st.session_state['comissao'] = comissao  # Atualiza o valor no session_state
