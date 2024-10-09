@@ -7,7 +7,7 @@ st.set_page_config(layout="wide")
 # Verificar autenticação e permissão no início
 verificar_acesso()
 
-
+st.title('Dados teste')
 def aplicar_mascara_telefone():
     telefone = ''.join(filter(str.isdigit, st.session_state['fone_raw']))  # Remove todos os caracteres que não são dígitos
     if len(telefone) == 11:
