@@ -6,7 +6,7 @@ CLIENT_ID = os.getenv('AZURE_CLIENT_ID')
 TENANT_ID = os.getenv('AZURE_TENANT_ID')
 CLIENT_SECRET = os.getenv('AZURE_CLIENT_SECRET')
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
-REDIRECT_URI = "https://blutrafoscomercialmediatensao.streamlit.app"
+REDIRECT_URI = os.getenv('REDIRECT_URI')
 SCOPES = ["User.Read"]
 
 EMAILS_PERMITIDOS = os.getenv('EMAILS_PERMITIDOS', '').split(',')
