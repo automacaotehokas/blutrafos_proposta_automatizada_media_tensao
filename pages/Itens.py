@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 from config_db import conectar_banco
-from auth import verificar_acesso 
 
-verificar_acesso()
+
+
 
 def verificar_dados_iniciais():
     # Verifica se 'dados_iniciais' existe no st.session_state e se todos os campos necessários estão preenchidos

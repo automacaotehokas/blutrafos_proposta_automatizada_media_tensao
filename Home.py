@@ -1,12 +1,11 @@
 import os
 import streamlit as st
-from auth import verificar_acesso # Importe as funções necessárias do arquivo auth.py
+
 
 # Configuração da página inicial - deve ser a primeira chamada
 st.set_page_config(page_title="Proposta Automatizada - Média Tensão", layout="wide")
 
-# Verificar autenticação e permissão no início
-verificar_acesso()
+
 
 # Conteúdo principal da página após a autenticação
 st.image("image1png.png", width=100)  # Adicionando a imagem do logo

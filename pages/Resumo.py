@@ -4,9 +4,7 @@ from io import BytesIO
 from replace import inserir_tabelas_word
 from docx import Document
 from sharepoint_code import SharePoint  # Classe SharePoint para baixar o template
-from auth import verificar_acesso 
 
-verificar_acesso()
 st.set_page_config(layout="wide")
 
 # Função para baixar o template uma vez e reutilizá-lo

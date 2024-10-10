@@ -1,11 +1,8 @@
 import streamlit as st
 from datetime import datetime
-from auth import verificar_acesso  # Importe a função de verificação
+
 
 st.set_page_config(layout="wide")
-
-# Verificar autenticação e permissão no início
-verificar_acesso()
 
 
 def aplicar_mascara_telefone():
