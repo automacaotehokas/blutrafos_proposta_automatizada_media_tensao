@@ -45,7 +45,7 @@ def autenticar_usuario():
                 return False
 
     # Verifica se há um código de autorização na URL após o redirecionamento
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params()
     if "code" in query_params:
         code = query_params["code"][0]
         result = app.acquire_token_by_authorization_code(
@@ -59,7 +59,7 @@ def autenticar_usuario():
             if email in EMAILS_PERMITIDOS:
                 st.session_state['autenticado'] = True
                 st.session_state['email'] = email
-                st.experimental_set_query_params()  # Limpa o código da URL após a autenticação
+                st.query_params()  # Limpa o código da URL após a autenticação
                 return True
             else:
                 st.session_state['autenticado'] = False
