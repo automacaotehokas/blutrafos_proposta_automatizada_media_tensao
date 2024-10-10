@@ -55,7 +55,7 @@ if 'itens_configurados' not in st.session_state:
     st.session_state['itens_configurados'] = []
 
 # Título da página
-st.title('Configuração de Itens')
+st.title('Configuração')
 st.markdown("---")
 
 # Busca dos dados (otimizado com cache)
