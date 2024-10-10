@@ -45,7 +45,7 @@ def autenticar_usuario():
                 return False
 
     # Verifica se há um código de autorização na URL após o redirecionamento
-    query_params = st.query_params()
+    query_params = st.query_params
     if "code" in query_params:
         code = query_params["code"][0]
         result = app.acquire_token_by_authorization_code(
@@ -59,7 +59,8 @@ def autenticar_usuario():
             if email in EMAILS_PERMITIDOS:
                 st.session_state['autenticado'] = True
                 st.session_state['email'] = email
-                st.query_params()  # Limpa o código da URL após a autenticação
+                # Limpa o código da URL após a autenticação
+                st.experimental_set_query_params()  # Limpa os parâmetros da URL
                 return True
             else:
                 st.session_state['autenticado'] = False
@@ -86,3 +87,6 @@ def verificar_acesso():
 def exibir_mensagem_permissao_negada():
     st.error("Você não tem permissão para acessar este aplicativo.")
     st.stop()
+
+# Chama a função de verificação de acesso
+verificar_acesso()
